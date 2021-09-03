@@ -1,13 +1,16 @@
+<!-- TODO Убрать кнопку СТАРТ если пользователь залогинен -->
 {% extends 'todo/base.html' %}
 
 {% block content %}
 
 <h1 class="text-center">Пользуем тудушки. Вперед!</h1>
+{% if not user.is_authenticated %}
 <div class="container d-flex justify-content-center">
-<form method="POST" action="{% url 'createtodo' %}">
-{% csrf_token %}
-<button type="submit" class="btn btn-primary btn-lg ">Старт</button>
-</form>
+    <form method="POST" action="{% url 'createtodo' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary btn-lg ">Старт</button>
+    </form>
 </div>
+{% endif %}
 
 {% endblock %}
