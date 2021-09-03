@@ -1,0 +1,13 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+
+<h1 class="text-center">Пользуем тудушки. Вперед!</h1>
+<div class="container d-flex justify-content-center">
+<form method="POST" action="{% url 'createtodo' %}">
+{% csrf_token %}
+<button type="submit" class="btn btn-primary btn-lg ">Старт</button>
+</form>
+</div>
+
+{% endblock %}
