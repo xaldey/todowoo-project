@@ -1,5 +1,5 @@
-{% load static %}
 <!doctype html>
+{% load static %}
 <html lang="ru">
 <head>
     <!-- Required meta tags -->
@@ -7,42 +7,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <link rel="icon" type="image/png"  href="{% static 'todo/logo.png' %}">
+    <link rel="icon" type="image/png"  href="{% static 'admin/img/icon-yes.svg' %}">
     <title>Тудушки</title>
 </head>
 
 <body>
-<nav class="navbar navbar-light bg-warning text-dark">
-  <div class="container navbar">
-    <a class="navbar-brand" href="/">
-      <img src="/static/admin/img/icon-yes.svg" alt="todowoo" width="30">
-      Тудушки
+
+<nav class="navbar navbar-expand-md navbar-light bg-warning">
+<div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}">
+         <img src="{% static 'admin/img/icon-yes.svg' %}" width="30" height="30" class="d-inline-block align-top">
+        <span>Тудушки</span>
     </a>
-
-        {% if user.is_authenticated %}
-        <h3>{{ user.username }}</h3>
-    <div class="navbar navbar-brand justify-content-start">
-        <a href="{% url 'createtodo' %}">Создать</a>
-        <a href="{% url 'currenttodos' %}">Текущие</a>
-        <a href="{% url 'completedtodos' %}">Завершенные</a>
-    </div>
-  </div>
-
-<div class="navbar justify-content-md-end">
-    <form action="{% url 'logoutuser' %}" method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-outline-secondary">Выйти</button>
-    </form>
-
-
-    {% else %}
-
-    <a href="{% url 'signupuser' %}">Зарегистрироваться</a>
-    <a href="{% url 'loginuser' %}">Войти</a>
-
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    {% if user.is_authenticated %}
+        <h2>{{ user.username }}</h2>
+        <ul class="navbar-nav mr-auto">
+                <li class="nav-item {{ current }}">
+                    <a class="nav-link" href="{% url 'currenttodos' %}">Текущие</a>
+                </li>
+                <li class="nav-item {{ completed }}">
+                    <a class="nav-link" href="{% url 'completedtodos' %}">Выполненные</a>
+                </li>
+                <li class="nav-item {{ create }}">
+                    <a class="nav-link" href="{% url 'createtodo' %}">Создать</a>
+                </li>
+        </ul>
     {% endif %}
+    <ul class="navbar-nav ml-auto ">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <form method="POST" action="{% url 'logoutuser' %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-secondary" type="submit">Выйти</button>
+                    </form>
+                    </a>
+                </li>
+
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'signupuser' %}">Регистрация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'loginuser' %}">Войти</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
 </div>
 </nav>
+
+
 <div class="container">
     {% block content%}{% endblock %}
 </div>
